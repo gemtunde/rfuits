@@ -20,25 +20,18 @@ export default function DiscoverPage() {
       </div>
 
       <div className="mb-8">
-        <h3 className="text-lg font-medium mb-4">Popular Categories</h3>
+        <h3 className="text-lg font-medium mb-4">Features</h3>
         <div className="flex flex-wrap gap-2">
-          {[
-            "Finance",
-            "Technology",
-            "Health",
-            "Education",
-            "Entertainment",
-            "Sports",
-            "Travel",
-            "Food",
-          ].map((category) => (
-            <span
-              key={category}
-              className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium"
-            >
-              {category}
-            </span>
-          ))}
+          {["Economy", "Science", "Safety", "Transportation", "Religion"].map(
+            (category) => (
+              <span
+                key={category}
+                className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium"
+              >
+                {category}
+              </span>
+            )
+          )}
         </div>
       </div>
 
@@ -71,10 +64,9 @@ export default function DiscoverPage() {
       <div>
         <h3 className="text-lg font-medium mb-4">Trending Topics</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <TrendingCard />
-          <TrendingCard />
-          <TrendingCard />
-          <TrendingCard />
+          {[1, 2, 3, 4].map((index) => (
+            <TrendingCard key={index} />
+          ))}
         </div>
       </div>
     </div>

@@ -2,16 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
-import { Calendar } from "@/components/ui/calendar";
+
 import {
   Table,
   TableBody,
@@ -41,48 +32,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { userData } from "@/lib/constants";
+import ChartData from "@/components/ChartData";
 
-const activityData = [
-  { name: "Jan", value: 400 },
-  { name: "Feb", value: 300 },
-  { name: "Mar", value: 600 },
-  { name: "Apr", value: 800 },
-  { name: "May", value: 500 },
-  { name: "Jun", value: 900 },
-  { name: "Jul", value: 1000 },
-];
-// const users = [
-//   {
-//     id: 1,
-//     name: "John Doe",
-//     email: "john@example.com",
-//     role: "Admin",
-//     status: "Active",
-//   },
-//   {
-//     id: 2,
-//     name: "Jane Smith",
-//     email: "jane@example.com",
-//     role: "Editor",
-//     status: "Active",
-//   },
-//   {
-//     id: 3,
-//     name: "Alice Johnson",
-//     email: "alice@example.com",
-//     role: "Viewer",
-//     status: "Inactive",
-//   },
-//   {
-//     id: 4,
-//     name: "Bob Brown",
-//     email: "bob@example.com",
-//     role: "Editor",
-//     status: "Active",
-//   },
-// ];
-
-// Define the schema for the form using zod
 const userFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
@@ -90,45 +42,37 @@ const userFormSchema = z.object({
   status: z.string().min(1, "Status is required"),
 });
 
+interface UserProps {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  status: string;
+}
+
 type UserFormValues = z.infer<typeof userFormSchema>;
 export default function HomePage() {
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      email: "john@example.com",
-      role: "Admin",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      email: "jane@example.com",
-      role: "Editor",
-      status: "Active",
-    },
-    {
-      id: 3,
-      name: "Alice Johnson",
-      email: "alice@example.com",
-      role: "Viewer",
-      status: "Inactive",
-    },
-    {
-      id: 4,
-      name: "Bob Brown",
-      email: "bob@example.com",
-      role: "Editor",
-      status: "Active",
-    },
-  ]);
+  const [users, setUsers] = useState<UserProps[]>(userData);
   // Calculate user statistics
   const totalUsers = users.length;
   const activeUsers = users.filter((user) => user.status === "Active").length;
   const inactiveUsers = users.filter(
     (user) => user.status === "Inactive"
   ).length;
-
+  const userStatsData = [
+    {
+      title: "Total Users",
+      value: totalUsers,
+    },
+    {
+      title: "Active Users",
+      value: activeUsers,
+    },
+    {
+      title: "Inactive Users",
+      value: inactiveUsers,
+    },
+  ];
   const form = useForm<UserFormValues>({
     resolver: zodResolver(userFormSchema),
     defaultValues: {
@@ -149,68 +93,25 @@ export default function HomePage() {
   const handleDeleteUser = (userId: number) => {
     setUsers(users.filter((user) => user.id !== userId));
   };
+
   return (
     <div className="max-w-6xl mx-auto p-6">
       <h2 className="text-xl font-semibold mb-4">Activity Overview</h2>
       {/* user stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Total Users</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">{totalUsers}</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Active Users</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">{activeUsers}</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Inactive Users</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">{inactiveUsers}</p>
-          </CardContent>
-        </Card>
+        {userStatsData.map((data) => (
+          <Card key={data.title}>
+            <CardHeader>
+              <CardTitle>{data.title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-3xl font-bold">{data.value}</p>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <div className="md:col-span-2 bg-white rounded-lg shadow-sm p-3">
-          <h3 className="text-lg font-medium mb-4">Activity Trends</h3>
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={activityData}
-                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Line
-                  type="monotone"
-                  dataKey="value"
-                  stroke="#4f46e5"
-                  strokeWidth={2}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-sm p-3">
-          <h3 className="text-lg font-medium mb-4">Calendar</h3>
-          <Calendar />
-        </div>
-      </div>
+      <ChartData />
 
       {/* Users Table */}
       <div className="bg-white rounded-lg shadow-sm p-6 mt-6">
