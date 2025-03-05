@@ -47,7 +47,12 @@ export default function DashboardLayout({
         )}
       >
         <div className="flex items-center justify-center p-6">
-          <Image src="/images/logo.png" alt="Logo" width={70} height={50} />
+          <Image
+            src="/rfuits/images/logo.png"
+            alt="Logo"
+            width={70}
+            height={50}
+          />
         </div>
 
         <nav className="flex-1 px-8 space-y-2">

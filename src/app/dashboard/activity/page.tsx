@@ -21,7 +21,7 @@ export default function ActivityPage() {
         <div className="w-full md:w-1/4 flex justify-center items-center  p-4 sm:p-6">
           <div className="relative h-80 sm:h-64 w-full">
             <Image
-              src="/images/banner.png"
+              src="/rfuits/images/banner.png"
               alt="scratching head"
               width={100}
               height={300}

@@ -58,7 +58,12 @@ export default function Login() {
         <CardHeader className="space-y-1">
           <div className="flex justify-center">
             <div className="rounded-full  p-4">
-              <Image src="/images/logo.png" alt="Logo" width={80} height={80} />
+              <Image
+                src="/rfuits/images/logo.png"
+                alt="Logo"
+                width={80}
+                height={80}
+              />
             </div>
           </div>
           <CardTitle className="text-2xl text-center">Welcome back</CardTitle>
