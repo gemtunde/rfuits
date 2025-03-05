@@ -158,7 +158,17 @@ export default function DashboardLayout({
   );
 }
 
-function NavItem({ icon, label, href, active }) {
+function NavItem({
+  icon,
+  label,
+  href,
+  active,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  href: string;
+  active: boolean;
+}) {
   return (
     <Link
       href={href}
@@ -173,7 +183,15 @@ function NavItem({ icon, label, href, active }) {
   );
 }
 
-function HistoryItem({ icon, title, date }) {
+function HistoryItem({
+  icon,
+  title,
+  date,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  date: string;
+}) {
   return (
     <div className="relative pl-8">
       <div className="absolute left-0 top-0 h-8 w-8 flex items-center justify-center z-10">
